@@ -1,6 +1,8 @@
 import { currentWrapper } from './currentWrapper.ts'
 import { hourlyWrapper } from './hourlyWrapper.ts'
 import { oneCallWrapper } from './oneCallWrapper.ts'
+import { dailyWrapper } from './dailyWrapper.ts'
+import { climateWrapper } from './climateWrapper.ts'
 
 const OPENWEATHER_URL = 'https://api.openweathermap.org/data/2.5'
 
@@ -11,6 +13,8 @@ export class OpenWeather {
   public current: currentWrapper
   public hourly: hourlyWrapper
   public oneCall: oneCallWrapper
+  public daily: dailyWrapper
+  public climate: climateWrapper
   private lang = 'en'
   constructor(apiKey: string, lang?: string) {
     this.apiKey = apiKey
@@ -20,6 +24,8 @@ export class OpenWeather {
     this.current = new currentWrapper(this.request)
     this.hourly = new hourlyWrapper(this.request)
     this.oneCall = new oneCallWrapper(this.request)
+    this.daily = new dailyWrapper(this.request)
+    this.climate = new climateWrapper(this.request)
   }
 
   public setApiKey(key: string) {

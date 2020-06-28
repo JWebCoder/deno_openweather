@@ -30,14 +30,12 @@ type hourlyWeatherResponse = {
       humidity: number,
       temp_kf: number,
     },
-    weather: [
-      {
-        id: number,
-        main: string,
-        description: string,
-        icon: string
-      }
-    ]
+    weather: {
+      id: number,
+      main: string,
+      description: string,
+      icon: string
+    }[]
     clouds: {
       all: number,
     }

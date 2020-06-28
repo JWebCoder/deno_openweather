@@ -106,38 +106,91 @@ type oneCallWeatherResponse = {
   }[]
 }
 
+type historicalWeatherResponse = {
+  lat: number,
+  lon: number,
+  timezone: string,
+  timezone_offset: number,
+
+  current: {
+    dt: number,
+    sunrise: number,
+    sunset: number,
+    temp: number,
+    feels_like: number,
+    pressure: number,
+    humidity: number,
+    dew_point: number,
+    clouds: number,
+    uvi: number,
+    visibility: number,
+    wind_speed: number,
+    wind_gust: number,
+    wind_deg: number,
+    rain: number,
+    snow: number,
+    weather: {
+      id: number,
+      main: string,
+      description: string,
+      icon: number,
+    }[]
+  }
+
+  hourly: {
+    dt: number,
+    temp: number,
+    feels_like: number,
+    pressure: number,
+    humidity: number,
+    dew_point: number,
+    clouds: number,
+    visibility: number,
+    wind_speed: number,
+    wind_gust: number,
+    wind_deg: number,
+    rain: number,
+    snow: number,
+    weather: {
+      id: number,
+      main: string,
+      description: string,
+      icon: number,
+    }[]
+  }[]
+}
+
 export class oneCallWrapper {
-  private endpoint = '/onecall?'
   private requester: OpenWeather["request"]
   constructor(requester: OpenWeather["request"]) {
     this.requester = requester
   }
 
   private request(endpoint: string, obj: serializableObject, lang?: string) {
-    return this.requester(endpoint, obj, lang) as Promise<oneCallWeatherResponse>
+    return this.requester(endpoint, obj, lang)
   }
 
   current(lat: string, lon: string, { exclude , lang }: { exclude?: exclude, lang?: string }) {
     return this.request(
-      this.endpoint,
+      '/onecall?',
       {
         lat,
         lon,
         exclude: Array.isArray(exclude) ? exclude.join(',') : undefined
       },
       lang
-    )
+    ) as Promise<oneCallWeatherResponse>
   }
 
-  historycal(lat: string, lon: string, dt: number, lang?: string) {
+  historical(lat: string, lon: string, dt: number, lang?: string) {
     return this.request(
-      this.endpoint,
+      '/onecall/timemachine?',
       {
         lat,
         lon,
         dt,
       },
       lang
-    )
+    ) as Promise<historicalWeatherResponse>
   }
 }
